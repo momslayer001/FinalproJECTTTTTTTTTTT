@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DandD Character Manager</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            padding: 20px;
+            
+            background: linear-gradient(135deg, #1a1c20 0%, #2d3436 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            
+        }
+
+        h1 {
+            color: #fff;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        h1::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 3px;
+            background: #ff6b6b;
+            margin: 10px auto;
+            border-radius: 2px;
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            margin-bottom: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .form-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #fff;
+            font-weight: 500;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            font-size: 16px;
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #ff6b6b;
+            background: rgba(255,255,255,0.1);
+            box-shadow: 0 0 10px rgba(255,107,107,0.3);
+        }
+
+        button {
+            background: #ff6b6b;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,107,107,0.4);
+        }
+
+        .character-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .character-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .character-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #ff6b6b, #ffd93d);
+        }
+
+        .character-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+        }
+
+        .character-card h3 {
+            margin-bottom: 15px;
+            color: #fff;
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+
+        .card-actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .edit-btn {
+            background: #4CAF50;
+        }
+
+        .edit-btn:hover {
+            background: #45a049;
+        }
+
+        .delete-btn {
+            background: #f44336;
+        }
+
+        .delete-btn:hover {
+            background: #da190b;
+        }
+
+        .stat {
+            margin: 10px 0;
+            color: rgba(255,255,255,0.8);
+            font-size: 0.95em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stat i {
+            width: 20px;
+            color: #ff6b6b;
+        }
+
+        /* Animation for new cards */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .character-card {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #ff6b6b;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ff5252;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .character-card {
+                padding: 20px;
+            }
+        }
+        .search-container {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.search-box {
+    flex: 1;
+    min-width: 200px;
+    position: relative;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 12px 40px 12px 45px;
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.search-box i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ff6b6b;
+}
+
+.search-type {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.search-type label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    padding: 8px 15px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: all 0.3s ease;
+}
+
+.search-type label:hover {
+    background: rgba(255,107,107,0.2);
+}
+
+.search-type input[type="radio"] {
+    display: none;
+}
+
+.search-type input[type="radio"]:checked + label {
+    background: #ff6b6b;
+    border-color: #ff6b6b;
+}
+
+.no-results {
+    text-align: center;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    margin: 20px 0;
+    font-size: 1.2em;
+    color: #ff6b6b;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎲 ระบบจัดการตัวละคร</h1>
+        <div class="search-container">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="ค้นหาตัวละคร..." oninput="searchCharacters()">
+            </div>
+            <div class="search-type">
+                <input type="radio" id="searchAll" name="searchType" value="all" checked>
+                <label for="searchAll"><i class="fas fa-globe"></i> ทั้งหมด</label>
+                
+                <input type="radio" id="searchName" name="searchType" value="name">
+                <label for="searchName"><i class="fas fa-user"></i> ชื่อ</label>
+                
+                <input type="radio" id="searchClass" name="searchType" value="class">
+                <label for="searchClass"><i class="fas fa-hat-wizard"></i> อาชีพ</label>
+                
+                <input type="radio" id="searchSkill" name="searchType" value="skill">
+                <label for="searchSkill"><i class="fas fa-bolt"></i> สกิล</label>
+            </div>
+        </div>
+        
+        <div class="form-container">
+            <div class="form-group">
+                <label for="name"><i class="fas fa-user"></i> ชื่อ:</label>
+                <input type="text" id="name" required placeholder="ใส่ชื่อตัวละคร">
+            </div>
+            <div class="form-group">
+                <label for="class"><i class="fas fa-hat-wizard"></i> อาชีพ:</label>
+                <input type="text" id="class" required placeholder="ใส่อาชีพตัวละคร">
+            </div>
+            <div class="form-group">
+                <label for="hp"><i class="fas fa-heart"></i> เลือด:</label>
+                <input type="number" id="hp" required placeholder="ใส่เลือดตัวละคร">
+            </div>
+            <div class="form-group">
+                <label for="mp"><i class="fas fa-fire-alt"></i> พลังเวท:</label>
+                <input type="number" id="mp" required placeholder="ใส่ค่าพลังเวทตัวละคร">
+            </div>
+            <div class="form-group">
+                <label for="skill"><i class="fas fa-bolt"></i> ความสามารถ:</label>
+                <input type="text" id="skill" required placeholder="ใส่ความสามารถตัวละคร">
+            </div>
+            <button onclick="createCharacter()" id="submitBtn">
+                <i class="fas fa-plus-circle"></i> สร้างตัวละคร
+            </button>
+            <button id="submitBtn" >
+            <a href="homepage.html">กลับไปหน้าหลัก</a>
+            </button>
+        </div>
+
+        <div class="character-list" id="characterList">
+            <!-- Characters will be dynamically added here -->
+        </div>
+    </div>
+
+    <script>
+        let allCharacters = []; // Store all characters for filtering
+        const API_URL = 'https://6799f858747b09cdcccd2eb1.mockapi.io/DandD';
+        let currentId = null;
+// Add event listeners for search type changes
+document.querySelectorAll('input[name="searchType"]').forEach(radio => {
+    radio.addEventListener('change', searchCharacters);
+});
+        async function fetchCharacters() {
+    try {
+        const response = await fetch(API_URL);
+        allCharacters = await response.json(); // Store all characters
+        displayCharacters(allCharacters);
+    } catch (error) {
+        console.error('Error fetching characters:', error);
+    }
+}
+
+function displayCharacters(characters) {
+    const characterList = document.getElementById('characterList');
+    characterList.innerHTML = '';
+
+    if (characters.length === 0) {
+        characterList.innerHTML = `
+            <div class="no-results">
+                <i class="fas fa-search"></i>
+                ไม่พบตัวละครที่ค้นหา
+            </div>
+        `;
+        return;
+    }
+
+    characters.forEach(character => {
+        const card = document.createElement('div');
+        card.className = 'character-card';
+        card.innerHTML = `
+            <h3><i class="fas fa-user-circle"></i> ${character.name}</h3>
+            <div class="stat"><i class="fas fa-hat-wizard"></i> Class: ${character.class}</div>
+            <div class="stat"><i class="fas fa-heart"></i> HP: ${character.hp}</div>
+            <div class="stat"><i class="fas fa-fire-alt"></i> MP: ${character.mp}</div>
+            <div class="stat"><i class="fas fa-bolt"></i> Skill: ${character.skill}</div>
+            <div class="card-actions">
+                <button class="edit-btn" onclick="editCharacter('${character.id}')">
+                    <i class="fas fa-edit"></i> แก้ไข
+                </button>
+                <button class="delete-btn" onclick="deleteCharacter('${character.id}')">
+                    <i class="fas fa-trash-alt"></i> ลบ
+                </button>
+            </div>
+        `;
+        characterList.appendChild(card);
+    });
+}
+
+        async function createCharacter() {
+            const character = getFormData();
+            
+            if (!validateForm(character)) {
+                alert('กรอกข้อมูลให้ครบ');
+                return;
+            }
+
+            try {
+                const method = currentId ? 'PUT' : 'POST';
+                const url = currentId ? `${API_URL}/${currentId}` : API_URL;
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(character),
+                });
+
+                if (response.ok) {
+                    resetForm();
+                    fetchCharacters();
+                }
+            } catch (error) {
+                console.error('เกิดข้อผิดพลาดในการบันทึก:', error);
+            }
+        }
+        async function editCharacter(id) {
+            try {
+                const response = await fetch(`${API_URL}/${id}`);
+                const character = await response.json();
+                
+                document.getElementById('name').value = character.name;
+                document.getElementById('class').value = character.class;
+                document.getElementById('hp').value = character.hp;
+                document.getElementById('mp').value = character.mp;
+                document.getElementById('skill').value = character.skill;
+                
+                currentId = id;
+                const submitBtn = document.getElementById('submitBtn');
+                submitBtn.innerHTML = '<i class="fas fa-save"></i> Update Character';
+                
+                // Scroll to form
+                document.querySelector('.form-container').scrollIntoView({ behavior: 'smooth' });
+            } catch (error) {
+                console.error('Error fetching character:', error);
+            }
+        }
+
+        async function deleteCharacter(id) {
+            if (confirm('แน่ใจหรอว่าจะลบตัวละครนี้')) {
+                try {
+                    const response = await fetch(`${API_URL}/${id}`, {
+                        method: 'DELETE',
+                    });
+
+                    if (response.ok) {
+                        fetchCharacters();
+                    }
+                } catch (error) {
+                    console.error('Error deleting character:', error);
+                }
+            }
+        }
+
+        function getFormData() {
+            return {
+                name: document.getElementById('name').value.trim(),
+                class: document.getElementById('class').value.trim(),
+                hp: parseInt(document.getElementById('hp').value),
+                mp: parseInt(document.getElementById('mp').value),
+                skill: document.getElementById('skill').value.trim(),
+            };
+        }
+
+        function validateForm(data) {
+            return data.name && data.class && data.hp && data.mp && data.skill;
+        }
+
+        function resetForm() {
+            document.getElementById('name').value = '';
+            document.getElementById('class').value = '';
+            document.getElementById('hp').value = '';
+            document.getElementById('mp').value = '';
+            document.getElementById('skill').value = '';
+            currentId = null;
+            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-plus-circle"></i> Create Character';
+        }
+
+        // Initial load
+        fetchCharacters();
+
+        function searchCharacters() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const searchType = document.querySelector('input[name="searchType"]:checked').value;
+    
+    let filteredCharacters = allCharacters;
+    
+    if (searchTerm) {
+        filteredCharacters = allCharacters.filter(character => {
+            switch (searchType) {
+                case 'name':
+                    return character.name.toLowerCase().includes(searchTerm);
+                case 'class':
+                    return character.class.toLowerCase().includes(searchTerm);
+                case 'skill':
+                    return character.skill.toLowerCase().includes(searchTerm);
+                default: // 'all'
+                    return character.name.toLowerCase().includes(searchTerm) ||
+                           character.class.toLowerCase().includes(searchTerm) ||
+                           character.skill.toLowerCase().includes(searchTerm);
+            }
+        });
+    }
+    
+    displayCharacters(filteredCharacters);
+}
+    </script>
+</body>
+</html>

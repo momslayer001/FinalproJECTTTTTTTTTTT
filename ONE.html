@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #ffffff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .form-container {
+            background: #2d2d2d;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #ff8c00;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ff8c00;
+            border-radius: 4px;
+            box-sizing: border-box;
+            background: #1a1a1a;
+            color: #ffffff;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #ffa500;
+            box-shadow: 0 0 5px rgba(255,140,0,0.5);
+        }
+
+        .gift-options {
+            display: flex;
+            gap: 20px;
+        }
+
+        .gift-option {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .gift-option input[type="checkbox"] {
+            width: auto;
+            accent-color: #ff8c00;
+        }
+
+        button {
+            background: #ff8c00;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background: #ffa500;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #ff8c00;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #2d2d2d;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #444;
+        }
+
+        th {
+            background: #1a1a1a;
+            color: #ff8c00;
+        }
+
+        .action-buttons button {
+            padding: 6px 12px;
+            margin-right: 5px;
+        }
+
+        .edit-btn {
+            background: #ff8c00;
+        }
+
+        .delete-btn {
+            background: #ff4500;
+        }
+
+        .gift-item {
+            display: inline-block;
+            margin: 2px;
+            padding: 2px 8px;
+            background: #ff8c00;
+            color: #1a1a1a;
+            border-radius: 12px;
+            font-size: 0.9em;
+        }
+
+        a {
+            color: white;
+            text-decoration: none;
+        }
+
+        h1, h2 {
+            color: #ff8c00;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ระบบจัดการสินค้า</h1>
+        
+        <div class="form-container">
+            <h2>เพิ่ม/แก้ไข</h2>
+            <form id="productForm">
+                <input type="hidden" id="productId">
+                <div class="form-group">
+                    <label for="name">ชื่อ:</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">คำอธิบาย:</label>
+                    <textarea id="description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="price">ราคา:</label>
+                    <input type="number" id="price" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="stock">สต๊อก:</label>
+                    <input type="number" id="stock" required>
+                </div>
+                <div class="form-group">
+                    <label>ของแถม:</label>
+                    <div class="gift-options">
+                        <div class="gift-option">
+                            <input type="checkbox" id="remote" name="gift">
+                            <label for="remote">รีโมท</label>
+                        </div>
+                        <div class="gift-option">
+                            <input type="checkbox" id="plug" name="gift">
+                            <label for="plug">ปลั๊ก</label>
+                        </div>
+                        <div class="gift-option">
+                            <input type="checkbox" id="mouse" name="gift">
+                            <label for="mouse">เมาส์</label>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit">บันทึกสินค้า</button>
+                <button type="button" onclick="resetForm()">เคลียร์</button>
+                <button><a href="homepage.html">กลับไปหน้าหลัก</a></button>
+            </form>
+        </div>
+        <div id="loading" class="loading" style="display: none;">กำลังโหลด...</div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>รหัส</th>
+                    <th>ชื่อ</th>
+                    <th>คำอธิบาย</th>
+                    <th>ราคา</th>
+                    <th>สต๊อก</th>
+                    <th>ของแถม</th>
+                    <th>แก้ไข/ลบ</th>
+                </tr>
+            </thead>
+            <tbody id="productTableBody">
+                <!-- Products will be inserted here -->
+            </tbody>
+        </table>
+    </div>
+    <script src="ONE.js"></script>
+</body>
+</html>

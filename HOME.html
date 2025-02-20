@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.23/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-image: url(bg3.jpg);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        .nav-content {
+            background: #6c63ff;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+        }
+
+        .content2 {
+            background: #6c63ff;
+            width: 100%;
+            margin-bottom: 15px;
+            margin-top: 0px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 150px;
+            text-align: center;
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .hero {
+            background: linear-gradient(45deg, #6c63ff, #5046e4);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            background: transparent;
+            backdrop-filter: blur(5px);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            padding-top: 200px;
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .features {
+            padding: 16px 16px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features h2 {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #333;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 0 1rem;
+        }
+
+        .feature-card {
+            position: relative;
+            height: 300px;
+            border: #6c63ff solid;
+            text-align: center;
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:nth-child(1) {
+            background-image: url('https://images.unsplash.com/photo-1472851294608-062f824d29cc');
+        }
+
+        .feature-card:nth-child(2) {
+            background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e');
+        }
+
+        .feature-card .card-content {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.7);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .feature-card:hover .card-content {
+            opacity: 1;
+        }
+
+        .feature-card h3 {
+            color: #ffffff;
+            margin-bottom: 20px;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover h3 {
+            transform: translateY(0);
+        }
+
+        .cta-button {
+            background: white;
+            color: #6c63ff;
+            padding: 0.75rem 2rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            transform: translateY(20px);
+            opacity: 0;
+        }
+
+        .feature-card:hover .cta-button {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            color: #ffffff;
+            background: rgb(118, 5, 170);
+        }
+
+        footer {
+            background-color: #000000;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* Responsive Styles */
+        @media screen and (max-width: 768px) {
+            .nav-content {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+                padding-top: 0;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .content2 {
+                flex-direction: column;
+                height: auto;
+                padding: 10px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .nav-content {
+                padding: 8px;
+            }
+
+            .logo {
+                font-size: 1.2rem;
+            }
+
+            .nav-links a {
+                padding: 0.5rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 0.9rem;
+            }
+
+            .cta-button {
+                padding: 0.5rem 1.5rem;
+            }
+
+            .features h2 {
+                font-size: 1.5rem;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <a href="index.html" class="logo">MyWebsite</a>
+            <div class="nav-links">
+                <a href="INDEX.html">LOG OUT</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Welcome to MyWebsite</h1>
+        <p>Discover amazing features and possibilities</p>
+    </section>
+
+    <section class="features">
+        <h2></h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="card-content">
+                    <h3>ระบบจัดการสินค้า</h3>
+                    <button class="cta-button"><a href="ONE.html">ไป</a></button>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="card-content">
+                    <h3>ระบบจัดการตัวละคร</h3>
+                    <button class="cta-button"><a href="D&D.html">ไป</a></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="content2">
+        </div>
+        <footer>ghz</footer>
+    </section>
+    <script src="home.js"></script>
+</body>
+</html>
